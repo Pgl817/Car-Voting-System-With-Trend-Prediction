@@ -110,6 +110,38 @@ body {
     border:1px solid #1f1f2a;
 }
 
+/* TOP ROW (Back button) */
+.top-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+}
+.back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 14px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.10);
+    background:rgba(255,255,255,0.06);
+    color:#fff;
+    cursor:pointer;
+    font-weight:700;
+    font-size:13px;
+    transition:.2s;
+}
+.back-btn:hover{
+    transform:translateY(-2px);
+    border-color: rgba(95,157,255,0.45);
+    box-shadow:0 0 18px rgba(95,157,255,0.18);
+}
+.back-hint{
+    color:#888;
+    font-size:12px;
+}
+
 .post-title {
     font-size:34px;
     background:linear-gradient(90deg,#b35cff,#6f9dff);
@@ -351,6 +383,17 @@ function toggleEditDesc(show){
         viewBox.style.display = "block";
     }
 }
+
+function goBack(){
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = "index.php";
+    }
+}
+document.addEventListener("keydown",(e)=>{
+    if (e.altKey && e.key === "ArrowLeft") goBack();
+});
 </script>
 </head>
 
@@ -360,6 +403,11 @@ function toggleEditDesc(show){
 
 <div class="container">
 <div class="post-card">
+
+    <div class="top-row">
+        <button class="back-btn" type="button" onclick="goBack()">← Back</button>
+        <div class="back-hint">Tip: Alt + ←</div>
+    </div>
 
     <h1 class="post-title"><?= htmlspecialchars($post['car_name']) ?></h1>
     <div class="post-author">By @<?= htmlspecialchars($post['username']) ?></div>
@@ -387,7 +435,7 @@ function toggleEditDesc(show){
         ❤️ <span id="likeCount"><?= (int)$like_count ?></span>
         ⭐ <span id="voteCount"><?= (int)$vote_count ?></span>
     </div>
-    
+
     <div class="desc">
         <div class="desc-head">
             <h3>Description</h3>
