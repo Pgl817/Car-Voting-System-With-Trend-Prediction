@@ -10,7 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST['password'];
     $confirm  = $_POST['confirm'];
 
-    if ($password !== $confirm) {
+    // NEW: password min length 6
+    if (strlen($password) < 6) {
+        $message = "Password must be at least 6 characters.";
+    } elseif ($password !== $confirm) {
         $message = "Passwords do not match.";
     } else {
         $check = $conn->prepare("SELECT id FROM users WHERE email=? OR username=?");
@@ -44,14 +47,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-
 body {
     margin:0;
     font-family:Arial;
     background:#000;
     color:white;
 }
-
 .bg-glow {
     position:fixed;
     inset:0;
@@ -61,7 +62,6 @@ body {
         #000;
     z-index:-1;
 }
-
 .page {
     min-height:100vh;
     display:flex;
@@ -69,7 +69,6 @@ body {
     justify-content:center;
     padding:30px;
 }
-
 .card {
     width:420px;
     background:#111;
@@ -80,7 +79,6 @@ body {
         0 0 25px rgba(0,0,0,.6),
         0 0 35px rgba(179,92,255,.15);
 }
-
 .card h2 {
     font-size:26px;
     text-align:center;
@@ -89,21 +87,18 @@ body {
     color:transparent;
     margin-bottom:6px;
 }
-
 .card p.sub {
     text-align:center;
     color:#aaa;
     margin-bottom:22px;
     font-size:14px;
 }
-
 label {
     font-size:13px;
     color:#bbb;
     display:block;
     margin-top:12px;
 }
-
 input {
     width:100%;
     padding:11px;
@@ -113,12 +108,10 @@ input {
     color:white;
     margin-top:6px;
 }
-
 input:focus {
     outline:none;
     box-shadow:0 0 0 1px #b35cff;
 }
-
 .btn-main {
     width:100%;
     padding:12px;
@@ -136,7 +129,6 @@ input:focus {
     transform:scale(1.04);
     box-shadow:0 0 26px rgba(179,92,255,.7);
 }
-
 .btn-secondary {
     width:100%;
     padding:11px;
@@ -150,7 +142,6 @@ input:focus {
 .btn-secondary:hover {
     background:#2d2d2d;
 }
-
 .msg {
     background:#1f1f1f;
     padding:10px;
@@ -160,7 +151,6 @@ input:focus {
     margin-bottom:12px;
     font-size:14px;
 }
-
 .footer {
     text-align:center;
     margin-top:16px;
@@ -199,10 +189,10 @@ input:focus {
             <input type="email" name="email" required>
 
             <label>Password</label>
-            <input type="password" name="password" required>
+            <input type="password" name="password" minlength="6" required>
 
             <label>Confirm Password</label>
-            <input type="password" name="confirm" required>
+            <input type="password" name="confirm" minlength="6" required>
 
             <button class="btn-main">Create Account</button>
         </form>
